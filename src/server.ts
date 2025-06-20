@@ -1,16 +1,12 @@
-import express from 'express'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
+import app from './app';
 
 
-const app = express()
 dotenv.config()
 const port = process.env.PORT
 const db_uri = process.env.DATABASE_URI!
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
 
 async function main() {
     try {
