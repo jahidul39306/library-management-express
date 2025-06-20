@@ -51,6 +51,14 @@ booksRouter.get('/:bookId', async (req: Request, res: Response, next: NextFuncti
         const bookId = req.params.bookId
         const book = await Book.findById(bookId)
 
+        if (!book) {
+            res.status(404).json({
+                success: false,
+                message: 'Book not found'
+            });
+            return
+        }
+
         res.status(202).json({
             "success": true,
             "message": "Book retrieved successfully",
@@ -67,10 +75,41 @@ booksRouter.put('/:bookId', async (req: Request, res: Response, next: NextFuncti
         const updatedBook = req.body
         const book = await Book.findByIdAndUpdate(bookId, updatedBook, { new: true, runValidators: true })
 
+        if (!book) {
+            res.status(404).json({
+                success: false,
+                message: 'Book not found'
+            });
+            return
+        }
+
         res.status(202).json({
             "success": true,
             "message": "Book updated successfully",
             "data": book
+        })
+    } catch (error) {
+        next(error)
+    }
+})
+
+booksRouter.delete('/:bookId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const bookId = req.params.bookId
+        const book = await Book.findByIdAndDelete(bookId)
+
+        if (!book) {
+            res.status(404).json({
+                success: false,
+                message: 'Book not found'
+            });
+            return
+        }
+
+        res.status(200).json({
+            "success": true,
+            "message": "Book deleted successfully",
+            "data": null
         })
     } catch (error) {
         next(error)
