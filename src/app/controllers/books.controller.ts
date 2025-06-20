@@ -21,7 +21,20 @@ booksRouter.post('/', async (req: Request, res: Response, next: NextFunction) =>
 
 booksRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const books = await Book.find().limit(10)
+        let filter = {}
+        let books = {}
+        const limit = typeof req.query.limit === 'string' ? parseInt(req.query.limit) : 10;
+
+        if (req.query.filter) {
+            filter = { genre: req.query.filter }
+        }
+        if (req.query.sortBy && req.query.sort) {
+            const key: any = req.query.sortBy
+            const order = req.query.sort === 'desc' ? -1 : 1
+            books = await Book.find(filter).sort({ [key]: order }).limit(limit)
+        } else {
+            books = await Book.find(filter).limit(limit)
+        }
 
         res.status(201).json({
             "success": true,
