@@ -36,10 +36,41 @@ booksRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
             books = await Book.find(filter).limit(limit)
         }
 
-        res.status(201).json({
+        res.status(202).json({
             "success": true,
             "message": "Books retrieved successfully",
             "data": books
+        })
+    } catch (error) {
+        next(error)
+    }
+})
+
+booksRouter.get('/:bookId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const bookId = req.params.bookId
+        const book = await Book.findById(bookId)
+
+        res.status(202).json({
+            "success": true,
+            "message": "Book retrieved successfully",
+            "data": book
+        })
+    } catch (error) {
+        next(error)
+    }
+})
+
+booksRouter.put('/:bookId', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const bookId = req.params.bookId
+        const updatedBook = req.body
+        const book = await Book.findByIdAndUpdate(bookId, updatedBook, { new: true, runValidators: true })
+
+        res.status(202).json({
+            "success": true,
+            "message": "Book updated successfully",
+            "data": book
         })
     } catch (error) {
         next(error)
