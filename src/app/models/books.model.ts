@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { IBooks } from "../interfaces/books.interface";
+import { BooksStaticMethods, IBooks } from "../interfaces/books.interface";
 
-const bookSchema = new Schema<IBooks>({
+const bookSchema = new Schema<IBooks, BooksStaticMethods>({
     title: { type: String, required: true, trim: true },
     author: { type: String, required: true, trim: true },
     genre: {
@@ -32,4 +32,16 @@ const bookSchema = new Schema<IBooks>({
     versionKey: false
 })
 
-export const Book = model<IBooks>("Books", bookSchema)
+bookSchema.static('updateBook', async function (bookId, newQuantity) {
+    let book
+    if (newQuantity === 0) {
+        book = await this.findByIdAndUpdate(bookId, { available: false, copies: newQuantity }, { new: true, runValidators: true })
+    } else {
+        book = await this.findByIdAndUpdate(bookId, { copies: newQuantity }, { new: true, runValidators: true })
+    }
+    if (book) {
+        return true
+    }
+    return false
+})
+export const Book = model<IBooks, BooksStaticMethods>("Books", bookSchema)

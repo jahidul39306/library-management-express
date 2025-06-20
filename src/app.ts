@@ -1,10 +1,12 @@
 import express, { Application, NextFunction, Request, Response } from 'express'
 import { booksRouter } from './app/controllers/books.controller'
+import { borrowsRouter } from './app/controllers/borrows.controller'
 
 const app: Application = express()
 
 app.use(express.json())
 app.use('/api/books', booksRouter)
+app.use('/api/borrow', borrowsRouter)
 
 app.get('/', (req, res) => {
     res.send('Hello World!')

@@ -1,3 +1,5 @@
+import { Model, Types } from "mongoose";
+
 export interface IBooks {
     title: string,
     author: string,
@@ -6,4 +8,8 @@ export interface IBooks {
     description: string,
     copies: number,
     available: boolean
+}
+
+export interface BooksStaticMethods extends Model<IBooks>{
+    updateBook(bookId: Types.ObjectId, newQuantity: number): boolean
 }
