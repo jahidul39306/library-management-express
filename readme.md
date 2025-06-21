@@ -43,10 +43,10 @@ Live Deployment: [https://assignment-3-library-management.vercel.app](https://as
 
 ```bash
 # 1. Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/jahidul39306/library-management-express.git
 
 # 2. Navigate to the project folder
-cd library_management
+cd library-management-express
 
 # 3. Install dependencies
 npm install
