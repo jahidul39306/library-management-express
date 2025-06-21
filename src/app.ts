@@ -12,11 +12,11 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.use((err: any, req: Request, res: Response, next: NextFunction): any => {
+app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
     if (err.name === 'ValidationError') {
         // delete err.errors?.copies?.properties?.path;
         // delete err.errors?.copies?.properties?.value;
-        return res.status(400).json({
+        res.status(400).json({
             "message": "Validation failed",
             "success": false,
             "error": {
@@ -25,12 +25,13 @@ app.use((err: any, req: Request, res: Response, next: NextFunction): any => {
             }
         })
     }
-
-    res.status(500).json({
-        message: 'Internal server error',
-        success: false,
-        error: err.message
-    })
+    else {
+        res.status(500).json({
+            message: 'Internal server error',
+            success: false,
+            error: err.message
+        })
+    }
 })
 
 export default app

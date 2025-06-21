@@ -29,7 +29,7 @@ booksRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
             filter = { genre: req.query.filter }
         }
         if (req.query.sortBy && req.query.sort) {
-            const key: any = req.query.sortBy
+            const key = typeof req.query.sortBy === 'string' ? req.query.sortBy : ""
             const order = req.query.sort === 'desc' ? -1 : 1
             books = await Book.find(filter).sort({ [key]: order }).limit(limit)
         } else {
