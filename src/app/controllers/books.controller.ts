@@ -96,7 +96,7 @@ booksRouter.put('/:bookId', async (req: Request, res: Response, next: NextFuncti
 booksRouter.delete('/:bookId', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const bookId = req.params.bookId
-        const book = await Book.findByIdAndDelete(bookId)
+        const book = await Book.findOneAndDelete({ _id: bookId })
 
         if (!book) {
             res.status(404).json({
